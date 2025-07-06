@@ -15,6 +15,7 @@ const Navbar = () => {
     { to: 'projects', label: 'Projects' },
   ];
 
+  // Load saved theme from localStorage on mount
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light') {
@@ -42,16 +43,20 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full bg-white dark:bg-gray-900 shadow-md z-50 transition-colors duration-300">
+      <nav className="fixed top-0 left-0 w-full bg-light dark:bg-dark shadow-md z-50 transition-colors duration-300 font-sans">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <span
-            className="text-2xl font-bold text-primary cursor-pointer"
-            onClick={() => scroll.scrollToTop()}
+            className="text-2xl font-bold text-primary cursor-pointer select-none"
+            onClick={() => {
+              scroll.scrollToTop();
+              closeMenu();
+            }}
           >
-            Construction Company 
+            Construction Company
           </span>
 
-          <div className="hidden md:flex space-x-8 text-gray-700 dark:text-gray-200 font-semibold items-center">
+          {/* Desktop nav */}
+          <div className="hidden md:flex space-x-8 text-dark dark:text-light font-semibold items-center">
             {isHome &&
               scrollNavItems.map((item) => (
                 <ScrollLink
@@ -62,37 +67,43 @@ const Navbar = () => {
                   offset={-70}
                   duration={500}
                   activeClass="text-primary border-b-2 border-primary"
-                  className="cursor-pointer hover:text-primary"
+                  className="cursor-pointer hover:text-primary transition"
+                  onClick={closeMenu}
                 >
                   {item.label}
                 </ScrollLink>
               ))}
 
             {!isHome && (
-              <Link to="/" className="hover:text-primary">
+              <Link to="/" onClick={closeMenu} className="hover:text-primary transition">
                 Home
               </Link>
             )}
-            <Link to="/AboutUs" className="hover:text-primary">
+            <Link to="/AboutUs" onClick={closeMenu} className="hover:text-primary transition">
               About
             </Link>
-            <Link to="/contact" className="hover:text-primary">
+            <Link to="/contact" onClick={closeMenu} className="hover:text-primary transition">
               Contact
             </Link>
 
+            {/* Dark mode toggle desktop */}
             <button
               onClick={toggleDarkMode}
-              className="ml-4 text-xl hover:text-primary transition"
+              className="ml-4 text-2xl hover:text-primary transition"
               title="Toggle Dark Mode"
+              aria-label="Toggle Dark Mode"
+              type="button"
             >
               {darkMode ? '☀️' : '🌙'}
             </button>
           </div>
 
+          {/* Mobile menu button */}
           <button
-            className="md:hidden text-gray-700 dark:text-gray-200"
+            className="md:hidden text-dark dark:text-light"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
+            type="button"
           >
             <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
               {isOpen ? (
@@ -108,9 +119,9 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* MOBILE MENU */}
+        {/* Mobile menu */}
         {isOpen && (
-          <div className="md:hidden bg-white dark:bg-gray-900 px-6 pb-4 space-y-2 text-gray-700 dark:text-gray-200">
+          <div className="md:hidden bg-light dark:bg-dark px-6 pb-4 space-y-2 text-dark dark:text-light font-semibold transition-colors duration-300">
             {isHome &&
               scrollNavItems.map((item) => (
                 <ScrollLink
@@ -121,27 +132,33 @@ const Navbar = () => {
                   offset={-70}
                   duration={500}
                   onClick={closeMenu}
-                  className="block cursor-pointer hover:text-primary"
+                  className="block cursor-pointer hover:text-primary transition"
                 >
                   {item.label}
                 </ScrollLink>
               ))}
+
             {!isHome && (
-              <Link to="/" onClick={closeMenu} className="block hover:text-primary">
+              <Link to="/" onClick={closeMenu} className="block hover:text-primary transition">
                 Home
               </Link>
             )}
-            <Link to="/AboutUs" onClick={closeMenu} className="block hover:text-primary">
+            <Link to="/AboutUs" onClick={closeMenu} className="block hover:text-primary transition">
               About
             </Link>
-            <Link to="/contact" onClick={closeMenu} className="block hover:text-primary">
+            <Link to="/contact" onClick={closeMenu} className="block hover:text-primary transition">
               Contact
             </Link>
 
+            {/* Dark mode toggle mobile */}
             <button
-              onClick={toggleDarkMode}
-              className="text-xl mt-2"
+              onClick={() => {
+                toggleDarkMode();
+                closeMenu();
+              }}
+              className="text-xl mt-2 hover:text-primary transition"
               title="Toggle Dark Mode"
+              type="button"
             >
               {darkMode ? '☀️ Light' : '🌙 Dark'}
             </button>
@@ -149,6 +166,7 @@ const Navbar = () => {
         )}
       </nav>
 
+      {/* Spacer so content doesn't hide behind fixed navbar */}
       <div className="h-[72px]" />
     </>
   );
