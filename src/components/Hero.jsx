@@ -90,7 +90,7 @@ const HeroPage = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/50 to-transparent z-10" />
         <div className="relative z-20 max-w-3xl">
           <motion.h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6 drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)]" initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: 'easeOut' }}>
-            <span className="bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">Dhis Mustaqbalkaaga</span><br />
+            <span className="bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">Guri Mustaqbal leh</span><br />
             <span className="underline decoration-wavy decoration-4 decoration-primary animate-pulse text-white drop-shadow-[0_3px_8px_rgba(255,255,255,0.5)]">Kalsooni & Tayo ku dhisan</span>
           </motion.h1>
         </div>

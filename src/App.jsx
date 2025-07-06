@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { FaWhatsapp } from 'react-icons/fa';
 
@@ -14,17 +14,45 @@ import AboutUs from './components/AboutUs.jsx';
 function App() {
   const [showWhatsApp, setShowWhatsApp] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [interactionHandled, setInteractionHandled] = useState(false);
+
+  const audioRef = useRef(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowWhatsApp(true);
-      setShowToast(true);
+    const handleUserInteraction = () => {
+      if (!interactionHandled) {
+        setInteractionHandled(true);
 
-      setTimeout(() => setShowToast(false), 5000); // Toast text kaliya 5 sec
-    }, 5000);
+        // Delay after interaction (e.g., 5s)
+        setTimeout(() => {
+          setShowWhatsApp(true);
+          setShowToast(true);
 
-    return () => clearTimeout(timer);
-  }, []);
+          if (audioRef.current) {
+            audioRef.current.play().catch((e) => {
+              console.warn('Audio failed to play:', e);
+            });
+          }
+
+          // Hide toast after 5s
+          setTimeout(() => setShowToast(false), 5000);
+        }, 5000);
+
+        // Remove event listeners after first interaction
+        document.removeEventListener('click', handleUserInteraction);
+        document.removeEventListener('keydown', handleUserInteraction);
+      }
+    };
+
+    // Add event listeners for interaction
+    document.addEventListener('click', handleUserInteraction);
+    document.addEventListener('keydown', handleUserInteraction);
+
+    return () => {
+      document.removeEventListener('click', handleUserInteraction);
+      document.removeEventListener('keydown', handleUserInteraction);
+    };
+  }, [interactionHandled]);
 
   return (
     <Router>
@@ -41,14 +69,17 @@ function App() {
         </main>
         <Footer />
 
-        {/* WhatsApp Toast Message */}
+        {/* 🔊 Audio element (hidden) */}
+        <audio ref={audioRef} src="/message.wav" preload="auto" />
+
+        {/* ✅ WhatsApp Toast Message */}
         {showToast && (
           <div className="fixed bottom-24 right-6 bg-primary text-white px-5 py-3 rounded-lg shadow-lg animate-bounce z-50 text-sm md:text-base">
-            📞 Nala Soo Xidhiidh Hadd!
+            📞 Nala Soo Xidhiidh Hadda!
           </div>
         )}
 
-        {/* WhatsApp Floating Button */}
+        {/* ✅ WhatsApp Floating Button */}
         {showWhatsApp && (
           <a
             href="https://wa.me/252634734075"

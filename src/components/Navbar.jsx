@@ -15,7 +15,6 @@ const Navbar = () => {
     { to: 'projects', label: 'Projects' },
   ];
 
-  // Load saved theme from localStorage on mount
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light') {
@@ -52,7 +51,7 @@ const Navbar = () => {
               closeMenu();
             }}
           >
-            Construction Company
+            Doodi Constraction   
           </span>
 
           {/* Desktop nav */}
@@ -165,9 +164,6 @@ const Navbar = () => {
           </div>
         )}
       </nav>
-
-      {/* Spacer so content doesn't hide behind fixed navbar */}
-      <div className="h-[72px]" />
     </>
   );
 };
