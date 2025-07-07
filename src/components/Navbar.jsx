@@ -51,7 +51,7 @@ const Navbar = () => {
               closeMenu();
             }}
           >
-            Doodi Constraction   
+            Cajab Constraction   
           </span>
 
           {/* Desktop nav */}

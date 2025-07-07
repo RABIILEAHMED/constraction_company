@@ -67,7 +67,7 @@ const AboutUs = () => {
           className="max-w-4xl mx-auto text-center text-gray-700 dark:text-gray-300 mb-12 leading-relaxed"
         >
           <p className="mb-4">
-            <span className="font-semibold text-primary">Doodi Construction</span>{" "}
+            <span className="font-semibold text-primary">Cajab Construction</span>{" "}
             waa shirkad casri ah la aasaasay sanadkii
             <span className="text-primary font-semibold"> 2019</span>. Waxay ku
             takhasustay dhismaha guryaha, waddooyinka, iyo xarumaha bulshada.
