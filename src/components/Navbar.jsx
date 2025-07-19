@@ -17,7 +17,9 @@ const Navbar = () => {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme === 'light' || (!savedTheme && !prefersDark)) {
       document.documentElement.classList.remove('dark');
       setDarkMode(false);
     } else {
@@ -27,7 +29,9 @@ const Navbar = () => {
   }, []);
 
   const toggleDarkMode = () => {
-    if (darkMode) {
+    const isCurrentlyDark = document.documentElement.classList.contains('dark');
+
+    if (isCurrentlyDark) {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
       setDarkMode(false);
@@ -41,65 +45,76 @@ const Navbar = () => {
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <>
-      <nav className="fixed top-0 left-0 w-full bg-light dark:bg-dark shadow-md z-50 transition-colors duration-300 font-sans">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <span
-            className="text-2xl font-bold text-primary cursor-pointer select-none"
-            onClick={() => {
-              scroll.scrollToTop();
-              closeMenu();
-            }}
-          >
-            Cajab Constraction   
-          </span>
+    <nav className="fixed top-0 left-0 w-full bg-light dark:bg-dark shadow-md z-50 transition-colors duration-300 font-sans">
+      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+        {/* Logo */}
+        <span
+          className="text-2xl font-bold text-primary cursor-pointer select-none"
+          onClick={() => {
+            scroll.scrollToTop();
+            closeMenu();
+          }}
+        >
+          Cajab Constraction
+        </span>
 
-          {/* Desktop nav */}
-          <div className="hidden md:flex space-x-8 text-dark dark:text-light font-semibold items-center">
-            {isHome &&
-              scrollNavItems.map((item) => (
-                <ScrollLink
-                  key={item.to}
-                  to={item.to}
-                  spy={true}
-                  smooth={true}
-                  offset={-70}
-                  duration={500}
-                  activeClass="text-primary border-b-2 border-primary"
-                  className="cursor-pointer hover:text-primary transition"
-                  onClick={closeMenu}
-                >
-                  {item.label}
-                </ScrollLink>
-              ))}
+        {/* Desktop Menu */}
+        <div className="hidden md:flex space-x-8 text-dark dark:text-light font-semibold items-center">
+          {isHome &&
+            scrollNavItems.map((item) => (
+              <ScrollLink
+                key={item.to}
+                to={item.to}
+                spy={true}
+                smooth={true}
+                offset={-70}
+                duration={500}
+                activeClass="text-primary border-b-2 border-primary"
+                className="cursor-pointer hover:text-primary transition"
+                onClick={closeMenu}
+              >
+                {item.label}
+              </ScrollLink>
+            ))}
 
-            {!isHome && (
-              <Link to="/" onClick={closeMenu} className="hover:text-primary transition">
-                Home
-              </Link>
-            )}
-            <Link to="/AboutUs" onClick={closeMenu} className="hover:text-primary transition">
-              About
+          {!isHome && (
+            <Link to="/" onClick={closeMenu} className="hover:text-primary transition">
+              Home
             </Link>
-            <Link to="/contact" onClick={closeMenu} className="hover:text-primary transition">
-              Contact
-            </Link>
+          )}
+          <Link to="/AboutUs" onClick={closeMenu} className="hover:text-primary transition">
+            About
+          </Link>
+          <Link to="/contact" onClick={closeMenu} className="hover:text-primary transition">
+            Contact
+          </Link>
 
-            {/* Dark mode toggle desktop */}
-            <button
-              onClick={toggleDarkMode}
-              className="ml-4 text-2xl hover:text-primary transition"
-              title="Toggle Dark Mode"
-              aria-label="Toggle Dark Mode"
-              type="button"
-            >
-              {darkMode ? '☀️' : '🌙'}
-            </button>
-          </div>
-
-          {/* Mobile menu button */}
+          {/* Desktop Dark Mode Toggle */}
           <button
-            className="md:hidden text-dark dark:text-light"
+            onClick={toggleDarkMode}
+            className="ml-4 text-2xl hover:text-primary transition"
+            title="Toggle Dark Mode"
+            aria-label="Toggle Dark Mode"
+            type="button"
+          >
+            {darkMode ? '☀️' : '🌙'}
+          </button>
+        </div>
+
+        {/* Mobile dark mode toggle - always visible */}
+        <div className="md:hidden flex items-center space-x-4">
+          <button
+            onClick={toggleDarkMode}
+            className="text-2xl text-dark dark:text-light hover:text-primary transition"
+            title="Toggle Dark Mode"
+            type="button"
+          >
+            {darkMode ? '☀️' : '🌙'}
+          </button>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="relative z-50 text-dark dark:text-light focus:outline-none"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
             type="button"
@@ -117,54 +132,41 @@ const Navbar = () => {
             </svg>
           </button>
         </div>
+      </div>
 
-        {/* Mobile menu */}
-        {isOpen && (
-          <div className="md:hidden bg-light dark:bg-dark px-6 pb-4 space-y-2 text-dark dark:text-light font-semibold transition-colors duration-300">
-            {isHome &&
-              scrollNavItems.map((item) => (
-                <ScrollLink
-                  key={item.to}
-                  to={item.to}
-                  spy={true}
-                  smooth={true}
-                  offset={-70}
-                  duration={500}
-                  onClick={closeMenu}
-                  className="block cursor-pointer hover:text-primary transition"
-                >
-                  {item.label}
-                </ScrollLink>
-              ))}
+      {/* Mobile menu */}
+      {isOpen && (
+        <div className="md:hidden bg-light dark:bg-dark px-6 pb-4 space-y-2 text-dark dark:text-light font-semibold transition-colors duration-300">
+          {isHome &&
+            scrollNavItems.map((item) => (
+              <ScrollLink
+                key={item.to}
+                to={item.to}
+                spy={true}
+                smooth={true}
+                offset={-70}
+                duration={500}
+                onClick={closeMenu}
+                className="block cursor-pointer hover:text-primary transition"
+              >
+                {item.label}
+              </ScrollLink>
+            ))}
 
-            {!isHome && (
-              <Link to="/" onClick={closeMenu} className="block hover:text-primary transition">
-                Home
-              </Link>
-            )}
-            <Link to="/AboutUs" onClick={closeMenu} className="block hover:text-primary transition">
-              About
+          {!isHome && (
+            <Link to="/" onClick={closeMenu} className="block hover:text-primary transition">
+              Home
             </Link>
-            <Link to="/contact" onClick={closeMenu} className="block hover:text-primary transition">
-              Contact
-            </Link>
-
-            {/* Dark mode toggle mobile */}
-            <button
-              onClick={() => {
-                toggleDarkMode();
-                closeMenu();
-              }}
-              className="text-xl mt-2 hover:text-primary transition"
-              title="Toggle Dark Mode"
-              type="button"
-            >
-              {darkMode ? '☀️ Light' : '🌙 Dark'}
-            </button>
-          </div>
-        )}
-      </nav>
-    </>
+          )}
+          <Link to="/AboutUs" onClick={closeMenu} className="block hover:text-primary transition">
+            About
+          </Link>
+          <Link to="/contact" onClick={closeMenu} className="block hover:text-primary transition">
+            Contact
+          </Link>
+        </div>
+      )}
+    </nav>
   );
 };
 
