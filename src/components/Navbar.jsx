@@ -6,7 +6,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const location = useLocation();
-
   const isHome = location.pathname === '/';
 
   const scrollNavItems = [
@@ -30,7 +29,6 @@ const Navbar = () => {
 
   const toggleDarkMode = () => {
     const isCurrentlyDark = document.documentElement.classList.contains('dark');
-
     if (isCurrentlyDark) {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
@@ -45,123 +43,137 @@ const Navbar = () => {
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-light dark:bg-dark shadow-md z-50 transition-colors duration-300 font-sans">
-      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Logo */}
-        <span
-          className="text-2xl font-bold text-primary cursor-pointer select-none"
-          onClick={() => {
-            scroll.scrollToTop();
-            closeMenu();
-          }}
-        >
-          Cajab Constraction
-        </span>
+    <nav className="fixed top-0 left-0 w-full bg-white dark:bg-gray-900 shadow-md z-50 transition duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <span
+              onClick={() => {
+                scroll.scrollToTop();
+                closeMenu();
+              }}
+              className="text-2xl font-bold text-primary cursor-pointer select-none"
+            >
+              Cajab Constraction
+            </span>
+          </div>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-8 text-dark dark:text-light font-semibold items-center">
-          {isHome &&
-            scrollNavItems.map((item) => (
-              <ScrollLink
-                key={item.to}
-                to={item.to}
-                spy={true}
-                smooth={true}
-                offset={-70}
-                duration={500}
-                activeClass="text-primary border-b-2 border-primary"
-                className="cursor-pointer hover:text-primary transition"
-                onClick={closeMenu}
-              >
-                {item.label}
-              </ScrollLink>
-            ))}
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center space-x-6 text-gray-800 dark:text-white font-semibold">
+            {isHome &&
+              scrollNavItems.map((item) => (
+                <ScrollLink
+                  key={item.to}
+                  to={item.to}
+                  smooth={true}
+                  offset={-70}
+                  duration={500}
+                  spy={true}
+                  activeClass="text-orange-600 border-b-2 border-orange-600"
+                  className="cursor-pointer hover:text-orange-600 transition"
+                  onClick={closeMenu}
+                >
+                  {item.label}
+                </ScrollLink>
+              ))}
 
-          {!isHome && (
-            <Link to="/" onClick={closeMenu} className="hover:text-primary transition">
-              Home
+            {!isHome && (
+              <Link to="/" onClick={closeMenu} className="hover:text-orange-600 transition">
+                Home
+              </Link>
+            )}
+            <Link to="/AboutUs" onClick={closeMenu} className="hover:text-orange-600 transition">
+              About
             </Link>
-          )}
-          <Link to="/AboutUs" onClick={closeMenu} className="hover:text-primary transition">
-            About
-          </Link>
-          <Link to="/contact" onClick={closeMenu} className="hover:text-primary transition">
-            Contact
-          </Link>
+            <Link to="/contact" onClick={closeMenu} className="hover:text-orange-600 transition">
+              Contact
+            </Link>
 
-          {/* Desktop Dark Mode Toggle */}
-          <button
-            onClick={toggleDarkMode}
-            className="ml-4 text-2xl hover:text-primary transition"
-            title="Toggle Dark Mode"
-            aria-label="Toggle Dark Mode"
-            type="button"
-          >
-            {darkMode ? '☀️' : '🌙'}
-          </button>
-        </div>
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={toggleDarkMode}
+              className="text-xl hover:text-orange-600 transition"
+              title="Toggle Dark Mode"
+            >
+              {darkMode ? '☀️' : '🌙'}
+            </button>
+          </div>
 
-        {/* Mobile dark mode toggle - always visible */}
-        <div className="md:hidden flex items-center space-x-4">
-          <button
-            onClick={toggleDarkMode}
-            className="text-2xl text-dark dark:text-light hover:text-primary transition"
-            title="Toggle Dark Mode"
-            type="button"
-          >
-            {darkMode ? '☀️' : '🌙'}
-          </button>
+          {/* Mobile Hamburger + Dark Toggle */}
+          <div className="md:hidden flex items-center space-x-4">
+            {/* Dark Toggle */}
+            <button
+              onClick={toggleDarkMode}
+              className="text-xl text-gray-800 dark:text-white hover:text-orange-600 transition"
+              title="Toggle Dark Mode"
+            >
+              {darkMode ? '☀️' : '🌙'}
+            </button>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="relative z-50 text-dark dark:text-light focus:outline-none"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle menu"
-            type="button"
-          >
-            <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
-              {isOpen ? (
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M18.3 5.71a1 1 0 00-1.42-1.42L12 9.17 7.12 4.3a1 1 0 00-1.42 1.42L10.59 12l-4.9 4.88a1 1 0 001.42 1.42L12 14.83l4.88 4.9a1 1 0 001.42-1.42L13.41 12l4.9-4.88z"
-                />
-              ) : (
-                <path d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
+            {/* Hamburger */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="focus:outline-none"
+              aria-label="Toggle Menu"
+            >
+              <svg
+                className={`w-6 h-6 transition ${
+                  isOpen ? 'text-orange-600' : 'text-gray-800 dark:text-white'
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {isOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-light dark:bg-dark px-6 pb-4 space-y-2 text-dark dark:text-light font-semibold transition-colors duration-300">
+        <div className="md:hidden bg-white dark:bg-gray-900 px-4 pt-2 pb-4 space-y-2 text-gray-800 dark:text-white font-medium">
           {isHome &&
             scrollNavItems.map((item) => (
               <ScrollLink
                 key={item.to}
                 to={item.to}
-                spy={true}
                 smooth={true}
                 offset={-70}
                 duration={500}
+                className="block cursor-pointer hover:text-orange-600 transition"
                 onClick={closeMenu}
-                className="block cursor-pointer hover:text-primary transition"
               >
                 {item.label}
               </ScrollLink>
             ))}
 
           {!isHome && (
-            <Link to="/" onClick={closeMenu} className="block hover:text-primary transition">
+            <Link to="/" onClick={closeMenu} className="block hover:text-orange-600 transition">
               Home
             </Link>
           )}
-          <Link to="/AboutUs" onClick={closeMenu} className="block hover:text-primary transition">
+          <Link to="/AboutUs" onClick={closeMenu} className="block hover:text-orange-600 transition">
             About
           </Link>
-          <Link to="/contact" onClick={closeMenu} className="block hover:text-primary transition">
+          <Link to="/contact" onClick={closeMenu} className="block hover:text-orange-600 transition">
             Contact
           </Link>
         </div>
