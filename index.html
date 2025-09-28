@@ -1,23 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="so">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Construction – Shirkadda Dhismaha Casriga ah</title>
-<meta name="description" content="Doodi Construction waa shirkad hormuud u ah dhismayaasha casriga ah, jidadka, iyo mashruucyada waaweyn ee Soomaaliya. Nala soo xiriir maanta.">
-<meta name="keywords" content="Doodi, Dhismo, Guryo, Jidad, Muqdisho, Shirkad Dhisme, Somalia, Construction, Projects, Services">
-<meta name="author" content="Doodi Construction">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="og:title" content="Doodi Construction – Dhis Mustaqbalkaaga Kalsooni ku dhisan">
-<meta property="og:description" content="Waxaan bixinaa adeegyo dhisme oo tayo sare leh si aan u xaqiijino guusha mashruucaaga.">
-<meta property="og:image" content="https://yourdomain.com/og-image.jpg"> <!-- Optional -->
-<meta property="og:url" content="https://yourdomain.com">
-<meta name="twitter:card" content="summary_large_image">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Doodi Construction – Shirkadda Dhismaha Casriga ah</title>
 
+    <!-- ✅ SEO Meta -->
+    <meta
+      name="description"
+      content="Doodi Construction waa shirkad hormuud u ah dhismayaasha casriga ah, guryaha, jidadka iyo mashruucyada waaweyn ee Soomaaliya."
+    />
+    <meta name="keywords" content="Doodi, Dhismo, Guryo, Jidad, Muqdisho, Shirkad Dhisme, Somalia, Construction" />
+
+    <!-- ✅ Branding -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+    <!-- ✅ Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <div id="root"></div>
+    <!-- ✅ Preloader -->
+    <div id="preloader">
+      <img src="/logo.png" alt="Doodi Logo" class="preloader-logo" />
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <p class="loading-text" id="loading-text">0%</p>
+    </div>
+
+    <!-- ✅ React Root -->
+    <div id="root" style="display: none;"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <style>
+      /* ✅ Preloader Background */
+      #preloader {
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(-45deg, #1e3a8a, #2563eb, #3b82f6, #93c5fd);
+        background-size: 400% 400%;
+        animation: gradientBG 8s ease infinite;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.6s ease;
+      }
+      @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      .preloader-logo {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 20px;
+      }
+
+      /* ✅ Progress Bar */
+      .progress-bar {
+        width: 200px;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        width: 0%;
+        background: #fff;
+        transition: width 0.3s ease;
+      }
+      .loading-text {
+        margin-top: 10px;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        color: #fff;
+        font-size: 1rem;
+      }
+    </style>
+
+    <script>
+      // ✅ Real loading using progress based on assets
+      const preloader = document.getElementById("preloader");
+      const root = document.getElementById("root");
+      const progressFill = document.getElementById("progress-fill");
+      const loadingText = document.getElementById("loading-text");
+
+      // Collect all assets (images, scripts, stylesheets)
+      const assets = [
+        ...document.images,
+        ...document.querySelectorAll("link[rel='stylesheet']"),
+        ...document.querySelectorAll("script[src]")
+      ];
+      let loaded = 0;
+      const total = assets.length;
+
+      function updateProgress() {
+        loaded++;
+        const percent = Math.round((loaded / total) * 100);
+        progressFill.style.width = percent + "%";
+        loadingText.textContent = percent + "%";
+        if (loaded >= total) {
+          // ✅ All assets loaded
+          setTimeout(() => {
+            preloader.style.opacity = "0";
+            setTimeout(() => {
+              preloader.style.display = "none";
+              root.style.display = "block";
+            }, 600);
+          }, 400);
+        }
+      }
+
+      if (total === 0) {
+        // No assets → hide quickly
+        updateProgress();
+      } else {
+        assets.forEach(asset => {
+          if (asset.complete) {
+            updateProgress();
+          } else {
+            asset.addEventListener("load", updateProgress);
+            asset.addEventListener("error", updateProgress);
+          }
+        });
+      }
+    </script>
   </body>
 </html>

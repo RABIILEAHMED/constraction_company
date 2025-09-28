@@ -55,7 +55,7 @@ const Navbar = () => {
               }}
               className="text-2xl font-bold text-primary cursor-pointer select-none"
             >
-              Cajab Constraction
+              Doodi Constraction Co.
             </span>
           </div>
 
