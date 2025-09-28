@@ -48,7 +48,7 @@ const HeroPage = () => {
           onClick={() => setShowServicesDetail(false)}
           className="absolute top-4 left-4 z-50 bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700"
         >
-          ⬅ Back
+          ⬅
         </button>
         <ServicesDetail />
       </div>
@@ -153,8 +153,9 @@ const HeroPage = () => {
 
       {/* ✅ Projects Section */}
       <ProjectsCarousel />
-      <HotelApartments />
       <ConstructionSteps />
+      <HotelApartments />
+      
     </div>
   );
 };
