@@ -95,11 +95,11 @@ const HeroPage = () => {
             transition={{ duration: 0.8 }}
           >
             <span className="bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">
-              Guri Mustaqbal leh
+             "Noogu kaalay Amaano
             </span>
             <br />
             <span className="underline decoration-wavy decoration-4 decoration-primary animate-pulse">
-              Kalsooni & Tayo ku dhisan
+              Hal-abuur & Dhisme Wanaagsan"
             </span>
           </motion.h1>
         </div>
